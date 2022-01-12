@@ -1,0 +1,48 @@
+services:
+  redis:  
+    image: redis:6.2.6
+    container_name: redis-auth
+    volumes:
+      - redis_auth:/data
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+    networks:
+      - etl-network     
+    command: redis-server /usr/local/etc/redis/redis.conf
+  postgres:
+    image: postgres:14.0
+    container_name: postgres-auth
+    volumes:
+      - postgres_auth:/var/lib/postgresql/data/
+      - ./postgres:/docker-entrypoint-initdb.d/
+    env_file:
+      - .env
+    networks:
+      - etl-network
+  app:
+    container_name: auth-app
+    build:
+      context: .
+      target: prod
+    ports:
+      - "8001:8001"
+    depends_on:
+      - redis
+      - postgres
+    volumes:
+      - ./src/app:/code/app
+      - ./src/manage.py:/code/manage.py
+    env_file:
+      - .env
+    networks:
+      - etl-network
+
+volumes:
+  redis_auth:
+    driver: local
+  postgres_auth:
+    driver: local
+
+networks:
+  etl-network:
+    external: true
+    driver: bridge

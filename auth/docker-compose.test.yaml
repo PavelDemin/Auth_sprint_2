@@ -1,0 +1,49 @@
+services:
+  test:
+    container_name: auth-test
+    build:
+      context: .
+      target: tests
+    volumes:
+      - ./src:/code
+      - ./shared:/code/shared
+      - ./shared/logs:/code/shared/logs
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_HOST=postgres-auth-test
+      - REDIS_HOST=redis-auth-test
+      - TESTING=True
+    depends_on:
+      - redis-test
+      - postgres-test
+    networks:
+      - etl-network
+
+  postgres-test:
+    image: postgres:14.0
+    container_name: postgres-auth-test
+    volumes:
+      - ./postgres:/docker-entrypoint-initdb.d/
+    environment:
+      - POSTGRES_HOST=postgres-auth-test
+    env_file:
+      - .env
+    ports:
+      - "5433:5432"
+    networks:
+      - etl-network  
+
+  redis-test:  
+    image: redis:6.2.6
+    container_name: redis-auth-test
+    volumes:
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+    networks:
+      - etl-network     
+    command: redis-server /usr/local/etc/redis/redis.conf
+
+networks:
+  etl-network:
+    external: true
+    driver: bridge
