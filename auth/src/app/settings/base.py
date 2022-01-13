@@ -69,6 +69,22 @@ class SwaggerSettings(BaseSettings):
     class Config:
         env_prefix = 'SWAGGER_'
 
+class OAUTH_Google(BaseSettings):
+
+    CLIENT_ID: str = '963136681289-tkqudjg0d6b7rqdcmdqdtnqqoiqk7d33.apps.googleusercontent.com'
+    CLIENT_SECRET: str = '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'
+
+    class Config:
+        env_prefix = 'OAUTH_GOOGLE_'
+
+class OAUTH_Yandex(BaseSettings):
+
+    CLIENT_ID: str = '065b8a86d02b429e8f3b28a8d63603bf'
+    CLIENT_SECRET: str = '1a65d56a23b04c3597d8c6fb54d0636d'
+
+    class Config:
+        env_prefix = 'OAUTH_YANDEX_'
+
 class CommonSettings(BaseSettings):
     FLASK_APP: str = 'app.main:app'
 
@@ -82,6 +98,9 @@ class CommonSettings(BaseSettings):
     REDIS: RedisSettings = RedisSettings()
     DB: DatabaseSettings = DatabaseSettings()
     SWAGGER: SwaggerSettings = SwaggerSettings()
+
+    OAUTH_Google: OAUTH_Google = OAUTH_Google()
+    OAUTH_Yandex: OAUTH_Yandex = OAUTH_Yandex()
 
     PAGINATION_PAGE_LIMIT: int = 5
 
