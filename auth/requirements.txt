@@ -47,3 +47,5 @@ apispec-webframeworks==0.5.2
 marshmallow-sqlalchemy==0.27.0
 ua-parser==0.10.0
 Flask-Limiter==2.0.4
+Authlib==0.15.5
+requests==2.27.1

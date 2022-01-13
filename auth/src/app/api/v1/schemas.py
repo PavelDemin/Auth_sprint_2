@@ -5,7 +5,7 @@ login_validate = [validate.Length(min=5, max=50)]
 password_validate = [validate.Length(min=5, max=25)]
 name_validate = [validate.Length(max=250)]
 page_validate = [validate.Range(min=1, error='Value must be greater than 0')]
-
+oauth_service_validate = [validate.OneOf(['google', 'yandex'])]
 
 class LoginSchema(Schema):
     login = fields.String(required=True, validate=login_validate)
@@ -76,3 +76,7 @@ class AssignRoleSchema(Schema):
 class UnassignRoleSchema(Schema):
     user_id = fields.UUID(required=True)
     role_id = fields.UUID(required=True)
+
+
+class OAuthPathParameterSchema(Schema):
+    service = fields.String(required=True, validate=oauth_service_validate)

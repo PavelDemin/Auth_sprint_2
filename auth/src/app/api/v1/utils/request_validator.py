@@ -42,3 +42,19 @@ class RequestValidator:
                 return f(*args, data=data, **kwargs)
             return inner
         return func
+
+    @classmethod
+    def validate_path_parameters(cls, schema):
+        def func(f):
+            @wraps(f)
+            def inner(*args, **kwargs):
+                try:
+                    if request.view_args:
+                        __ = schema().load(request.view_args)
+                    else:
+                        raise RequestValidationException('No path parameters')
+                except ValidationError as err:
+                    raise RequestValidationException(err.messages)
+                return f(*args, **kwargs)
+            return inner
+        return func

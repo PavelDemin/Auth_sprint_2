@@ -1,15 +1,14 @@
 from http import HTTPStatus
 
-from flask import Flask, jsonify
-from flask.wrappers import Response
-from injector import inject
-from sqlalchemy.exc import DatabaseError
-
 from app.exceptions import DataBaseException
 from app.logging import get_logger
 from app.models.role import Role, RoleSchema
 from app.services.user_service import UserService
 from app.storage.db import db
+from flask import Flask, jsonify
+from flask.wrappers import Response
+from injector import inject
+from sqlalchemy.exc import DatabaseError
 
 
 class RoleService:
@@ -99,7 +98,7 @@ class RoleService:
         return jsonify(prepare_roles), HTTPStatus.OK
 
     def assign_role(self, data):
-        
+
         user_id = data['user_id']
         role_id = data['role_id']
 
@@ -116,17 +115,17 @@ class RoleService:
             return jsonify({}), HTTPStatus.OK
 
     def unassign_role(self, data):
-        
+
         user_id = data['user_id']
         role_id = data['role_id']
 
-        user = self.user_service.get_by_id(user_id)   
+        user = self.user_service.get_by_id(user_id)
         role = self.get_by_id(role_id)
-        if not role in user.roles:
+        if role not in user.roles:
             get_logger().error('Попытка удалить несуществующую роль у пользователя')
-            raise DataBaseException('The curent role not exists for the user')            
+            raise DataBaseException('The curent role not exists for the user')
         user.roles.remove(role)
-        
+
         db.session.add(user)
         try:
             db.session.commit()
@@ -145,4 +144,4 @@ class RoleService:
 
 def init_roleservice(app: Flask):
     role_service = RoleService()
-    app.role_service = role_service # type: ignore
+    app.role_service = role_service  # type: ignore

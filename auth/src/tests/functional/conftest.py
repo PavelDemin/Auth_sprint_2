@@ -1,7 +1,6 @@
 from urllib.parse import urljoin
 
 import pytest
-
 from app.main import app
 from app.models.role import DefaultRoleEnum, Role
 from app.services.role_service import RoleService
@@ -16,6 +15,11 @@ def auth_url():
 @pytest.fixture
 def role_url():
     return '/api/v1/roles/'
+
+
+@pytest.fixture
+def oauth_url():
+    return '/api/v1/oauth/'
 
 
 @pytest.fixture

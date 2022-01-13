@@ -38,7 +38,7 @@ class WrongCredentialsException(BaseHTTPException):
 
 class InvalidRefreshTokenException(BaseHTTPException):
     code = HTTPStatus.UNAUTHORIZED
-    name = 'Refresh token is invalid'    
+    name = 'Refresh token is invalid'
 
 
 def init_error_handler(app: Flask):
@@ -46,7 +46,7 @@ def init_error_handler(app: Flask):
     class AppResponseAfterValidation(Response, ABC):
         data: Any
 
-    @app.errorhandler(BaseHTTPException) # type: ignore 
+    @app.errorhandler(BaseHTTPException)  # type: ignore
     def json_exc_handler(exception: BaseHTTPException):
         resp = cast(AppResponseAfterValidation, exception.get_response())
         resp.data = json.dumps({

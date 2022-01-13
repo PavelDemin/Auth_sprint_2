@@ -13,6 +13,7 @@ from app.services.user_service import UserService, init_userservice
 from app.settings import settings
 from app.storage.db import init_db
 from app.utils.limiter import init_limiter
+from app.utils.oauth import init_oauth
 
 app = Flask(settings.FLASK_APP)
 ma = Marshmallow()
@@ -22,6 +23,8 @@ app.config['DEBUG'] = settings.DEBUG
 app.config['SECRET_KEY'] = settings.SECRET_KEY
 
 init_db(app)
+init_oauth(app)
+
 init_userservice(app)
 init_roleservice(app)
 init_limiter(app)
@@ -43,6 +46,7 @@ def user_lookup_loader(jwt_header: dict, jwt_payload: dict):
 
 init_swagger(app)
 init_error_handler(app)
+init_log_config()
 
 FlaskInjector(app=app, modules=[configure])
 
