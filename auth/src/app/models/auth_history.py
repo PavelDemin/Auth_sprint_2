@@ -16,7 +16,7 @@ class AuthHistory(db.Model, UUIDMixin):  # type: ignore
     )
 
     user_id = db.Column('user_id', UUIDType(binary=False),  # type: ignore
-                        db.ForeignKey('users.id', ondelete='CASCADE'))  # type: ignore
+                        db.ForeignKey('users_master.id', ondelete='CASCADE'))  # type: ignore
     timestamp = db.Column(db.DateTime, server_default=db.func.now())  # type: ignore
     user_agent = db.Column(db.Text, nullable=False)  # type: ignore
     ip_address = db.Column(IPAddressType)  # type: ignore

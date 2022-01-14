@@ -45,9 +45,9 @@ class Role(db.Model, UUIDMixin, TimeStampedMixin):  # type: ignore
 
 user_role = db.Table(  # type: ignore
     'user_role',
-    db.Column('user_id', UUIDType(binary=False), db.ForeignKey('users.id', ondelete='CASCADE')),  # type: ignore
+    db.Column('user_id', UUIDType(binary=False), db.ForeignKey('users_master.id', ondelete='CASCADE')),  # type: ignore
     db.Column('role_id', UUIDType(binary=False), db.ForeignKey('roles.id', ondelete='CASCADE')),  # type: ignore
-    db.UniqueConstraint('user_id', 'role_id', name='uniq_user_role')  # type: ignore
+    db.UniqueConstraint('user_id', 'role_id', name='uniq_user_master_role')  # type: ignore
 )
 
 
