@@ -12,14 +12,19 @@ from .role import user_role
 
 
 class User(db.Model, TimeStampedMixin, UUIDMixin):  # type: ignore
-    __tablename__ = 'users'
+    __tablename__ = 'users_master'
+    __table_args__ = (
+        {
+            'postgresql_partition_by': 'HASH (id)'
+        }
+    )
 
     login = db.Column(db.String(250), unique=True, nullable=False)  # type: ignore
     _password_hash = db.Column('password', db.String, nullable=False)  # type: ignore
     first_name = db.Column(db.String(250), nullable=True)  # type: ignore
     last_name = db.Column(db.String(250), nullable=True)  # type: ignore
     email = db.Column(db.String(250), unique=True, nullable=False)  # type: ignore
-    roles = db.relationship('Role', secondary=user_role, backref=db.backref('users', lazy='dynamic'))  # type: ignore
+    roles = db.relationship('Role', secondary=user_role, backref=db.backref('users_master', lazy='dynamic'))  # type: ignore
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -57,7 +62,7 @@ class User(db.Model, TimeStampedMixin, UUIDMixin):  # type: ignore
 class OAuthUser(db.Model, TimeStampedMixin, UUIDMixin):  # type: ignore
     __tablename__ = "oauth_users"
 
-    user_id = db.Column(UUIDType(binary=False), db.ForeignKey('users.id'), nullable=False)  # type: ignore
+    user_id = db.Column(UUIDType(binary=False), db.ForeignKey('users_master.id'), nullable=False)  # type: ignore
     user = db.relationship(User, backref=db.backref('oauth_users', lazy=True))  # type: ignore
 
     oauth_id = db.Column(db.String(255), nullable=False)  # type: ignore

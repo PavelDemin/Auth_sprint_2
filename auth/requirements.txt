@@ -45,7 +45,7 @@ flask-swagger-ui==3.36.0
 apispec[marshmallow]==5.1.1
 apispec-webframeworks==0.5.2
 marshmallow-sqlalchemy==0.27.0
-ua-parser==0.10.0
 Flask-Limiter==2.0.4
 Authlib==0.15.5
 requests==2.27.1
+user-agents==2.2.0

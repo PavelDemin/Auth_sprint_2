@@ -15,7 +15,6 @@ from app.services.jwt_service import JWTService
 from app.services.user_service import UserService
 from app.settings import settings
 from app.storage.db import db
-from app.utils.uaparser import get_device_from_useragent
 
 
 class AuthService:
@@ -29,13 +28,12 @@ class AuthService:
     def _add_auth_history(user: User) -> None:
         ip_address = request.remote_addr
         user_agent = request.user_agent.string
-        device = get_device_from_useragent(user_agent)
 
         auth_history = AuthHistory(
             user_id=user.id,
             user_agent=user_agent,
             ip_address=ip_address,
-            device=device,
+            device=AuthHistory.user_agent_to_user_device(user_agent)
         )
         db.session.add(auth_history)
         try:
