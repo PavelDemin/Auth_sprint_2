@@ -31,11 +31,11 @@ def upgrade():
     sa.UniqueConstraint('name'),
     schema=schema
     )
-    
+
     op.drop_column('users', 'is_staff', schema=schema)
     op.drop_column('users', 'is_active', schema=schema)
     op.drop_column('users', 'is_superuser', schema=schema)
-    
+
     op.create_table('user_role',
     sa.Column('user_id', sqlalchemy_utils.types.uuid.UUIDType(binary=False), nullable=False),
     sa.Column('role_id', sqlalchemy_utils.types.uuid.UUIDType(binary=False), nullable=False),
