@@ -36,13 +36,34 @@ class RedisSettings(BaseSettings):
         env_prefix = 'REDIS_'
 
 
+class RedisLimiterSettings(BaseSettings):
+    HOST: str = '127.0.0.1'
+    PORT: int = 6379
+    PROTOCOL: str = 'redis'
+    DSN: Optional[RedisDsn] = None
+
+    @validator('DSN', pre=True)
+    def build_dsn(cls, v, values) -> RedisDsn:
+        if v:
+            return v
+
+        protocol = values['PROTOCOL']
+        host = values['HOST']
+        port = values['PORT']
+
+        return cast(RedisDsn, f'{protocol}://{host}:{port}/')
+
+    class Config:
+        env_prefix = 'LIMITER_REDIS_'
+
+
 class DatabaseSettings(BaseSettings):
     SCHEMA: str = 'auth'
 
     USER: str = 'postgres'
     PASSWORD: str = 'YzX2oMILuA'
     PORT: str = '5432'
-    HOST: str = '127.0.0.1'
+    HOST: str = '0.0.0.0'
     PROTOCOL: str = 'postgresql'
     DSN: Optional[PostgresDsn] = None
 
@@ -96,6 +117,7 @@ class CommonSettings(BaseSettings):
 
     WSGI: WSGISettings = WSGISettings()
     REDIS: RedisSettings = RedisSettings()
+    LIMITER_REDIS: RedisLimiterSettings = RedisLimiterSettings()
     DB: DatabaseSettings = DatabaseSettings()
     SWAGGER: SwaggerSettings = SwaggerSettings()
 
@@ -108,4 +130,4 @@ class CommonSettings(BaseSettings):
     DEFAULT_ADMIN_PASSWORD: str = 'admin'
     DEFAULT_ADMIN_EMAIL: str = 'admin@admin.ru'
 
-    LIMITER_RATE: str = '100 per minute'
+    LIMITER_RATE: int = 100

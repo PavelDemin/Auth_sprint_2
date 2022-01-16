@@ -3,17 +3,16 @@ from flask_injector import FlaskInjector
 from flask_jwt_extended import JWTManager
 from flask_marshmallow import Marshmallow
 
-from app.api import v1 as api_v1
-from app.dependencies import configure
-from app.exceptions import init_error_handler
-from app.logging import init_log_config
-from app.openapi.swagger import init_swagger
-from app.services.role_service import init_roleservice
-from app.services.user_service import UserService, init_userservice
-from app.settings import settings
-from app.storage.db import init_db
-from app.utils.limiter import init_limiter
-from app.utils.oauth import init_oauth
+from .api import v1 as api_v1
+from .dependencies import configure
+from .exceptions import init_error_handler
+from .logging import init_log_config
+from .openapi.swagger import init_swagger
+from .services.role_service import init_roleservice
+from .services.user_service import UserService, init_userservice
+from .settings import settings
+from .storage.db import init_db
+from .utils.oauth import init_oauth
 
 app = Flask(settings.FLASK_APP)
 ma = Marshmallow()
@@ -27,7 +26,6 @@ init_oauth(app)
 
 init_userservice(app)
 init_roleservice(app)
-init_limiter(app)
 
 ma.init_app(app)
 api_v1.create_api(app)

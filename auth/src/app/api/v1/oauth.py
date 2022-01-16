@@ -1,5 +1,6 @@
 from app.services.oauth_service import OAuthService
 from app.utils.oauth import oauth
+from app.utils.limiter import LimiterRequests
 from flask import Blueprint, jsonify, redirect, request, url_for
 from flask.wrappers import Response
 from flask_jwt_extended import current_user
@@ -11,11 +12,13 @@ oauth_bp = Blueprint('oauth', __name__, url_prefix='/oauth')
 
 
 @oauth_bp.route('/test', methods=['GET', ])
+@LimiterRequests()
 def test_route():
     return 'It works'
 
 
 @oauth_bp.route('/login/<string:service>', methods=['GET'])
+@LimiterRequests()
 @RequestValidator.validate_path_parameters(schema=OAuthPathParameterSchema)
 def login(service, oauth_service: OAuthService):
     """Запрос на доступ к аккаунту сервиса с помощью OAuth
@@ -47,6 +50,7 @@ def login(service, oauth_service: OAuthService):
 
 
 @oauth_bp.route('/auth/<string:service>', methods=['GET'])
+@LimiterRequests()
 @RequestValidator.validate_path_parameters(schema=OAuthPathParameterSchema)
 def auth(service, oauth_service: OAuthService) -> Response:
     """Аутификация с помощью OAuth

@@ -41,6 +41,12 @@ class InvalidRefreshTokenException(BaseHTTPException):
     name = 'Refresh token is invalid'
 
 
+class TooManyRequestsExceptions(BaseHTTPException):
+    code = HTTPStatus.TOO_MANY_REQUESTS
+    name = 'To many requests'
+
+
+
 def init_error_handler(app: Flask):
 
     class AppResponseAfterValidation(Response, ABC):
