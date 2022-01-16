@@ -6,7 +6,6 @@ from app.services.user_service import UserService
 from app.storage.jwt_storage import JWTRedisStorage, JWTStorage
 
 
-
 def configure(binder):
     
     jwt_storage = JWTRedisStorage()
