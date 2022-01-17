@@ -1,4 +1,5 @@
 from app.services.role_service import RoleService
+from app.utils.limiter import LimiterRequests
 from flask import Blueprint
 from flask.wrappers import Response
 from flask_jwt_extended import jwt_required
@@ -12,6 +13,7 @@ role_bp = Blueprint('roles', __name__, url_prefix='/roles')
 
 
 @role_bp.route('/create_role', methods=['POST'])
+@LimiterRequests()
 @jwt_required()
 @admin_required
 @RequestValidator.validate_body(schema=RolesSchema)
@@ -47,6 +49,7 @@ def create_role(data, role_service: RoleService) -> tuple[Response, int]:
 
 
 @role_bp.route('/delete_role', methods=['DELETE'])
+@LimiterRequests()
 @jwt_required()
 @admin_required
 @RequestValidator.validate_body(schema=DeleteRoleSchema)
@@ -81,6 +84,7 @@ def delete_role(data, role_service: RoleService) -> tuple[Response, int]:
 
 
 @role_bp.route('/update_role', methods=['PUT'])
+@LimiterRequests()
 @jwt_required()
 @admin_required
 @RequestValidator.validate_body(schema=ResponseRoleSchema)
@@ -115,6 +119,7 @@ def update_role(data, role_service: RoleService) -> tuple[Response, int]:
 
 
 @role_bp.route('/get_role/<uuid:role_id>', methods=['GET'])
+@LimiterRequests()
 @jwt_required()
 @admin_required
 def get_role(role_id, role_service: RoleService) -> tuple[Response, int]:
@@ -155,6 +160,7 @@ def get_role(role_id, role_service: RoleService) -> tuple[Response, int]:
 
 
 @role_bp.route('/get_roles', methods=['GET'])
+@LimiterRequests()
 @jwt_required()
 @admin_required
 def get_roles(role_service: RoleService) -> tuple[Response, int]:
@@ -187,6 +193,7 @@ def get_roles(role_service: RoleService) -> tuple[Response, int]:
 
 
 @role_bp.route('/assign_role', methods=['POST'])
+@LimiterRequests()
 @jwt_required()
 @admin_required
 @RequestValidator.validate_body(schema=AssignRoleSchema)
@@ -221,6 +228,7 @@ def assign_role(data, role_service: RoleService) -> tuple[Response, int]:
 
 
 @role_bp.route('/unassign_role', methods=['DELETE'])
+@LimiterRequests()
 @jwt_required()
 @admin_required
 @RequestValidator.validate_body(schema=UnassignRoleSchema)

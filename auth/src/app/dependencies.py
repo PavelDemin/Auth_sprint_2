@@ -12,3 +12,4 @@ def configure(binder):
     binder.bind(interface=JWTStorage, to=jwt_storage, scope=singleton)
     binder.bind(interface=UserService, to=UserService, scope=request)
     binder.bind(interface=JWTService, to=JWTService, scope=request)
+

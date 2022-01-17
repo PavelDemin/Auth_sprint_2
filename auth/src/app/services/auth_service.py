@@ -1,5 +1,4 @@
 from http import HTTPStatus
-from typing import cast
 
 from flask import jsonify, request
 from flask.wrappers import Response
@@ -39,13 +38,13 @@ class AuthService:
         try:
             db.session.commit()
         except SQLAlchemyError as exception:
-            get_logger().error(f'Ошибка записи истории аутификаций {str(exception)}')
+            get_logger().error(f'Ошибка записи истории аутентификаций {str(exception)}')
 
     def signup(self, data: dict) -> tuple[Response, int]:
         user = self.user_service.create_user(data)
         return jsonify(user.to_dict()), HTTPStatus.CREATED
 
-    def login(self, data: dict) -> Response:
+    def login(self, data: dict) -> tuple[Response, int]:
         login = data['login']
         user = self.user_service.get_by_login(login)
         if not user or not user.verify_password(data['password']):
@@ -60,7 +59,7 @@ class AuthService:
         return jsonify({
             'access_token': access_token,
             'refresh_token': refresh_token
-        })
+        }), HTTPStatus.OK
 
     def logout(self) -> Response:
         refresh_jti = self.token_service.get_claim_from_token('refresh_token')
@@ -137,7 +136,7 @@ class AuthService:
                 page=page, per_page=settings.PAGINATION_PAGE_LIMIT, error_out=False
             )
         except SQLAlchemyError as exception:
-            get_logger().error(f'Ошибка получении истории аутификации. {str(exception)}')
+            get_logger().error(f'Ошибка получении истории аутентификации. {str(exception)}')
             raise DataBaseException('')
         else:
             return jsonify([record.to_dict() for record in paginator.items])
