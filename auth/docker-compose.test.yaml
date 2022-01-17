@@ -13,6 +13,7 @@ services:
     environment:
       - POSTGRES_HOST=postgres-auth-test
       - REDIS_HOST=redis-auth-test
+      - LIMITER_REDIS_HOST=redis-auth-test
       - TESTING=True
     depends_on:
       - redis-test

@@ -49,3 +49,4 @@ Flask-Limiter==2.0.4
 Authlib==0.15.5
 requests==2.27.1
 user-agents==2.2.0
+pyrate-limiter==2.6.0
