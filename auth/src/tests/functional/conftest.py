@@ -1,10 +1,12 @@
 from urllib.parse import urljoin
+from redis import ConnectionPool, Redis
 
 import pytest
 from app.main import app
 from app.models.role import DefaultRoleEnum, Role
 from app.services.role_service import RoleService
 from app.storage.db import db
+from app.settings import settings
 
 
 @pytest.fixture
@@ -143,4 +145,19 @@ def make_body_for_login():
             'login': login,
             'password': password,
         }
+    return inner
+
+
+@pytest.fixture(scope='session')
+def redis_client():
+    pool = ConnectionPool.from_url(url=settings.LIMITER_REDIS.DSN)
+    redis = Redis(connection_pool=pool)
+    yield redis
+    redis.close()
+
+
+@pytest.fixture
+def clear_redis(redis_client):
+    def inner():
+        redis_client.flushall()
     return inner

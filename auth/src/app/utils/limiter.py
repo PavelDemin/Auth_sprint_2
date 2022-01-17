@@ -3,7 +3,8 @@ from functools import wraps
 from app.exceptions import TooManyRequestsExceptions
 from app.settings import settings
 from flask import request
-from pyrate_limiter import BucketFullException, Duration, Limiter, RequestRate, RedisBucket
+from pyrate_limiter import (BucketFullException, Duration, Limiter,
+                            RedisBucket, RequestRate)
 from redis import ConnectionPool
 
 
@@ -21,11 +22,10 @@ class LimiterRequests:
 
         @wraps(func)
         def wrapper(*args, **kwargs):
-
             try:
                 self.limiter.try_acquire(request.remote_addr)
-            except BucketFullException:
-                raise TooManyRequestsExceptions('')
+            except BucketFullException as error:
+                raise TooManyRequestsExceptions(error.meta_info)
             return func(*args, **kwargs)
 
         return wrapper
