@@ -1,6 +1,7 @@
 from urllib.parse import urljoin
 
 import pytest
+from werkzeug.datastructures import Headers
 
 
 @pytest.fixture
@@ -45,6 +46,6 @@ def test_url(auth_url):
 
 @pytest.fixture
 def fake_access_header():
-    return {
-        'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjQwODM4Mjg0LCJqdGkiOiI2YTQ4YjM0NC00MjE5LTQ0YWMtOTBiNi0xYjIyYzY0OWE0MWYiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjoiNWQ2MzYwNzItOTZjZS00YWZkLTkzMDgtZjQwNDFjMTA0N2M4IiwibmJmIjoxNjQwODM4Mjg0LCJleHAiOjE2NDA4MzkxODQsInJlZnJlc2hfdG9rZW4iOiJhNDIwY2QyZi0yZjdlLTRhNGMtYTVkMC04YmQxM2IwZDY0YzcifQ.PcEPr2yd606a-PxgCTyTS_Df4WBv9w_dwe1RT_ovbDg'
-    }
+    return Headers({
+            'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNjQwODM4Mjg0LCJqdGkiOiI2YTQ4YjM0NC00MjE5LTQ0YWMtOTBiNi0xYjIyYzY0OWE0MWYiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjoiNWQ2MzYwNzItOTZjZS00YWZkLTkzMDgtZjQwNDFjMTA0N2M4IiwibmJmIjoxNjQwODM4Mjg0LCJleHAiOjE2NDA4MzkxODQsInJlZnJlc2hfdG9rZW4iOiJhNDIwY2QyZi0yZjdlLTRhNGMtYTVkMC04YmQxM2IwZDY0YzcifQ.PcEPr2yd606a-PxgCTyTS_Df4WBv9w_dwe1RT_ovbDg'
+    })
