@@ -106,6 +106,15 @@ class OAUTH_Yandex(BaseSettings):
     class Config:
         env_prefix = 'OAUTH_YANDEX_'
 
+class Jaeger(BaseSettings):
+    TYPE: str = 'const'
+    REPORTING_HOST: str = 'jaeger'
+    REPORTING_PORT: int = 6831
+    SERVICE_NAME: str = 'auth'
+
+    class Config:
+        env_prefix = 'JAEGER_'
+
 class CommonSettings(BaseSettings):
     FLASK_APP: str = 'app.main:app'
 
@@ -131,3 +140,5 @@ class CommonSettings(BaseSettings):
     DEFAULT_ADMIN_EMAIL: str = 'admin@admin.ru'
 
     LIMITER_RATE: int = 100
+
+    JAEGER: Jaeger = Jaeger()

@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 from flask_injector import FlaskInjector
 from flask_jwt_extended import JWTManager
 from flask_marshmallow import Marshmallow
@@ -13,6 +13,7 @@ from .services.user_service import UserService, init_userservice
 from .settings import settings
 from .storage.db import init_db
 from .utils.oauth import init_oauth
+from .utils.tracer import init_tracer
 
 app = Flask(settings.FLASK_APP)
 ma = Marshmallow()
@@ -45,8 +46,17 @@ def user_lookup_loader(jwt_header: dict, jwt_payload: dict):
 init_swagger(app)
 init_error_handler(app)
 init_log_config()
+init_tracer(app)
+
+@app.before_request
+def before_request():
+    request_id = request.headers.get('X-Request-Id')
+    if not request_id:
+        raise RuntimeError('request id is requred')
+
 
 FlaskInjector(app=app, modules=[configure])
+
 
 app.app_context().push()
 
