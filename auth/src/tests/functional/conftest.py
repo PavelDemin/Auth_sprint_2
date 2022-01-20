@@ -1,3 +1,4 @@
+import uuid
 from urllib.parse import urljoin
 
 import pytest
@@ -8,6 +9,10 @@ from app.models.role import DefaultRoleEnum, Role
 from app.services.role_service import RoleService
 from app.settings import settings
 from app.storage.db import db
+
+from flask import testing
+from redis import ConnectionPool, Redis
+from werkzeug.datastructures import Headers
 
 
 @pytest.fixture
@@ -50,8 +55,20 @@ def email():
     return 'signup_o@test.ru'
 
 
+class TestClient(testing.FlaskClient):
+    def open(self, *args, **kwargs):
+        api_key_headers = Headers({
+            'X-Request-Id': str(uuid.uuid4())
+        })
+        headers = kwargs.pop('headers', Headers())
+        headers.extend(api_key_headers)
+        kwargs['headers'] = headers
+        return super().open(*args, **kwargs)
+
+
 @pytest.fixture
 def client():
+    app.test_client_class = TestClient
     with app.test_client() as client:
         yield client
 
@@ -113,7 +130,9 @@ def make_access_header():
 
     def inner(tokens):
         access_token = tokens['access_token']
-        return {'Authorization': f'Bearer {access_token}'}
+        return Headers({
+            'Authorization': f'Bearer {access_token}'
+        })
     return inner
 
 
@@ -122,7 +141,9 @@ def make_refresh_header():
 
     def inner(tokens):
         refresh_token = tokens['refresh_token']
-        return {'Authorization': f'Bearer {refresh_token}'}
+        return Headers({
+            'Authorization': f'Bearer {refresh_token}'
+        })
     return inner
 
 

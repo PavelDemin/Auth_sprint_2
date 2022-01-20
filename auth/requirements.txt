@@ -50,3 +50,5 @@ Authlib==0.15.5
 requests==2.27.1
 user-agents==2.2.0
 pyrate-limiter==2.6.0
+jaeger-client==4.8.0
+Flask-OpenTracing==1.1.0
