@@ -1,5 +1,6 @@
-from app.settings import settings
 from authlib.integrations.flask_client import OAuth
+
+from app.settings import settings
 
 
 def init_google(oauth: OAuth):

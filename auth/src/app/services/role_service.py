@@ -1,14 +1,15 @@
 from http import HTTPStatus
 
+from flask import Flask, jsonify
+from flask.wrappers import Response
+from injector import inject
+from sqlalchemy.exc import DatabaseError
+
 from app.exceptions import DataBaseException
 from app.logging import get_logger
 from app.models.role import Role, RoleSchema
 from app.services.user_service import UserService
 from app.storage.db import db
-from flask import Flask, jsonify
-from flask.wrappers import Response
-from injector import inject
-from sqlalchemy.exc import DatabaseError
 
 
 class RoleService:

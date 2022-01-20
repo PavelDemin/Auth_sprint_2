@@ -1,8 +1,9 @@
-from app.services.auth_service import AuthService
-from app.utils.limiter import LimiterRequests
 from flask import Blueprint
 from flask.wrappers import Response
 from flask_jwt_extended import jwt_required
+
+from app.services.auth_service import AuthService
+from app.utils.limiter import LimiterRequests
 
 from .schemas import (ChangeLoginSchema, ChangePasswordSchema, LoginSchema,
                       PaginationSchema, SignUpSchema)

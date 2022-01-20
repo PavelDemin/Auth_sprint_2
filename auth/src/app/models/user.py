@@ -1,11 +1,12 @@
-from app.exceptions import ModelSchemaValidationException
-from app.logging import get_logger
-from app.models.role import Role
-from app.storage.db import db
 from marshmallow import EXCLUDE, validates
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from sqlalchemy_utils import UUIDType
 from werkzeug.security import check_password_hash, generate_password_hash
+
+from app.exceptions import ModelSchemaValidationException
+from app.logging import get_logger
+from app.models.role import Role
+from app.storage.db import db
 
 from .common import TimeStampedMixin, UUIDMixin
 from .role import user_role

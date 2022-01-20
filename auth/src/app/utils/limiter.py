@@ -1,11 +1,12 @@
 from functools import wraps
 
-from app.exceptions import TooManyRequestsExceptions
-from app.settings import settings
 from flask import request
 from pyrate_limiter import (BucketFullException, Duration, Limiter,
                             RedisBucket, RequestRate)
 from redis import ConnectionPool
+
+from app.exceptions import TooManyRequestsExceptions
+from app.settings import settings
 
 
 class LimiterRequests:

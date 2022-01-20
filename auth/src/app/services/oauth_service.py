@@ -1,5 +1,10 @@
 from uuid import uuid4
 
+from flask import jsonify, request
+from flask.wrappers import Response
+from injector import inject
+from sqlalchemy.exc import DatabaseError, SQLAlchemyError
+
 from app.exceptions import DataBaseException
 from app.logging import get_logger
 from app.models.auth_history import AuthHistory
@@ -8,10 +13,6 @@ from app.services.jwt_service import JWTService
 from app.services.user_service import UserService
 from app.storage.db import db
 from app.utils.oauth import oauth
-from flask import jsonify, request
-from flask.wrappers import Response
-from injector import inject
-from sqlalchemy.exc import DatabaseError, SQLAlchemyError
 
 
 class OAuthService():

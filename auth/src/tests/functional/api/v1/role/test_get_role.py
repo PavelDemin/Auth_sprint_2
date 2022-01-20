@@ -2,10 +2,11 @@ from http import HTTPStatus
 from unittest.mock import ANY
 
 import pytest
+from typer.testing import CliRunner
+
 from app.models.role import Role
 from app.models.user import User
 from manage import typer_app
-from typer.testing import CliRunner
 
 runner = CliRunner()
 

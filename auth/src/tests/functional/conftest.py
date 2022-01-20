@@ -1,12 +1,13 @@
 from urllib.parse import urljoin
-from redis import ConnectionPool, Redis
 
 import pytest
+from redis import ConnectionPool, Redis
+
 from app.main import app
 from app.models.role import DefaultRoleEnum, Role
 from app.services.role_service import RoleService
-from app.storage.db import db
 from app.settings import settings
+from app.storage.db import db
 
 
 @pytest.fixture

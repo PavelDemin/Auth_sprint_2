@@ -1,5 +1,6 @@
-from app.settings import settings
 from authlib.integrations.flask_client import OAuth
+
+from app.settings import settings
 
 from .utils import map_profile_fields
 
