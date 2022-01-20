@@ -1,10 +1,9 @@
 from sqlalchemy_utils import IPAddressType, UUIDType
+from user_agents import parse
 
 from app.storage.db import db
 
 from .common import UUIDMixin
-
-from user_agents import parse
 
 
 class AuthHistory(db.Model, UUIDMixin):  # type: ignore

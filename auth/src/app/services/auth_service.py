@@ -140,3 +140,11 @@ class AuthService:
             raise DataBaseException('')
         else:
             return jsonify([record.to_dict() for record in paginator.items])
+
+    def is_authorise(self) -> Response:
+        jti = self.token_service.get_claim_from_token('refresh_token')
+        user_id = self.token_service.get_claim_from_token('sub')
+        if not self.token_service.is_exists_refresh_token(jti, user_id):
+            get_logger().debug(f'Попытка получить статус авторизации по неизвестному токену, юзер {user_id}')
+            raise InvalidRefreshTokenException('')
+        return jsonify()

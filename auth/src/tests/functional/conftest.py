@@ -2,11 +2,14 @@ import uuid
 from urllib.parse import urljoin
 
 import pytest
+from redis import ConnectionPool, Redis
+
 from app.main import app
 from app.models.role import DefaultRoleEnum, Role
 from app.services.role_service import RoleService
 from app.settings import settings
 from app.storage.db import db
+
 from flask import testing
 from redis import ConnectionPool, Redis
 from werkzeug.datastructures import Headers

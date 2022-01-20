@@ -80,3 +80,7 @@ class UnassignRoleSchema(Schema):
 
 class OAuthPathParameterSchema(Schema):
     service = fields.String(required=True, validate=oauth_service_validate)
+
+
+# class IsAuthoriseSchema(Schema):
+#     is_authorise = fields.Bool()

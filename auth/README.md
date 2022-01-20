@@ -53,3 +53,6 @@ docker-compose -f docker-compose.test.yaml up --build --exit-code-from test
 
 ### Контроль доступа на основе ролей
 - список присвоенных ролей пользователю передается в токене (user_roles в access_claims)
+
+### Интеграция с Async API
+[Ссылка на репозиторий Async API](https://github.com/pogorelskii/Async_API_sprint_2)

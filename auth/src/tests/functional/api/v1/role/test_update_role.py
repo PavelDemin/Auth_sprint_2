@@ -1,9 +1,10 @@
 from http import HTTPStatus
 
+from typer.testing import CliRunner
+
 from app.models.role import Role
 from app.models.user import User
 from manage import typer_app
-from typer.testing import CliRunner
 
 runner = CliRunner()
 

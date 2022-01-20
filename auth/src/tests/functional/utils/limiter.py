@@ -2,9 +2,10 @@ from http import HTTPStatus
 from time import sleep
 
 import pytest
+from flask import Response
+
 from app.main import app
 from app.utils.limiter import LimiterRequests
-from flask import Response
 
 
 @pytest.fixture()
