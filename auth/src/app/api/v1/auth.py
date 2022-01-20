@@ -255,3 +255,26 @@ def auth_history(data, auth_service: AuthService) -> Response:
         - Пользователь
     """
     return auth_service.auth_history(page=data['page'])
+
+
+@auth_bp.route('/is_authorise', methods=['GET'])
+@LimiterRequests()
+@jwt_required()
+def is_authorise(auth_service: AuthService) -> Response:
+    """Проверка на авторизацию пользователя
+    ---
+    get:
+      description: Проверка на авторизацию пользователя
+      security:
+        - jwt_token: []
+      responses:
+        200:
+          description: Пользователь авторизован
+        401:
+          description: Необходима авторизация
+        429:
+          description: Отправлено слишком много запросов
+      tags:
+        - Пользователь
+    """
+    return auth_service.is_authorise()
