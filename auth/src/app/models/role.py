@@ -1,10 +1,8 @@
 from enum import Enum
 
-from marshmallow import EXCLUDE, validates
+from app.storage.db import db
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from sqlalchemy_utils import UUIDType
-
-from app.storage.db import db
 
 from .common import TimeStampedMixin, UUIDMixin
 

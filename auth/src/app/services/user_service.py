@@ -1,10 +1,9 @@
-from flask import Flask
-from sqlalchemy.exc import DatabaseError
-
 from app.exceptions import DataBaseException, ModelSchemaValidationException
 from app.logging import get_logger
 from app.models.user import User, UserSchema
 from app.storage.db import db
+from flask import Flask
+from sqlalchemy.exc import DatabaseError
 
 
 class UserService:

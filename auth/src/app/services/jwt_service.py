@@ -1,11 +1,8 @@
-from typing import Any, Optional, cast
-
-from flask_jwt_extended import (create_access_token, create_refresh_token,
-                                current_user, get_jti, get_jwt)
-from injector import inject
-
 from app.models.user import User
 from app.storage.jwt_storage import JWTStorage
+from flask_jwt_extended import (create_access_token, create_refresh_token,
+                                get_jti, get_jwt)
+from injector import inject
 
 
 class JWTService:

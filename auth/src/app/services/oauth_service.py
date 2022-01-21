@@ -1,41 +1,23 @@
 from uuid import uuid4
 
-from flask import jsonify, request
-from flask.wrappers import Response
-from injector import inject
-from sqlalchemy.exc import DatabaseError, SQLAlchemyError
-
 from app.exceptions import DataBaseException
 from app.logging import get_logger
 from app.models.auth_history import AuthHistory
-from app.models.user import OAuthUser, OAuthUserSchema, User
+from app.models.user import OAuthUser, OAuthUserSchema
 from app.services.jwt_service import JWTService
 from app.services.user_service import UserService
 from app.storage.db import db
 from app.utils.oauth import oauth
+from flask import jsonify
+from flask.wrappers import Response
+from injector import inject
+from sqlalchemy.exc import DatabaseError
 
 
 class OAuthService():
 
     model = OAuthUser
     schema = OAuthUserSchema
-
-    @staticmethod
-    def _add_auth_history(user: User) -> None:
-        ip_address = request.remote_addr
-        user_agent = request.user_agent.string
-
-        auth_history = AuthHistory(
-            user_id=user.id,
-            user_agent=user_agent,
-            ip_address=ip_address,
-            device=AuthHistory.user_agent_to_user_device(user_agent)
-        )
-        db.session.add(auth_history)
-        try:
-            db.session.commit()
-        except SQLAlchemyError as exception:
-            get_logger().error(f'Ошибка записи истории аутификаций {str(exception)}')
 
     @inject
     def __init__(self, user_service: UserService, token_service: JWTService):
@@ -103,7 +85,7 @@ class OAuthService():
         access_token, refresh_token = self.token_service.gen_tokens(user, True)
         self.token_service.save_refresh_token(token=refresh_token, user_id=user.id)
 
-        self._add_auth_history(user)
+        AuthHistory.add_auth_history(user)
 
         return jsonify({
             'access_token': access_token,

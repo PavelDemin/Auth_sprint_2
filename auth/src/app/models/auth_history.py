@@ -1,9 +1,12 @@
+from app.logging import get_logger
+from app.storage.db import db
+from flask import request
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy_utils import IPAddressType, UUIDType
 from user_agents import parse
 
-from app.storage.db import db
-
 from .common import UUIDMixin
+from .user import User
 
 
 class AuthHistory(db.Model, UUIDMixin):  # type: ignore
@@ -36,6 +39,23 @@ class AuthHistory(db.Model, UUIDMixin):  # type: ignore
         else:
             device = 'web'
         return device
+
+    @staticmethod
+    def add_auth_history(user: User) -> None:
+        ip_address = request.remote_addr
+        user_agent = request.user_agent.string
+
+        auth_history = AuthHistory(
+            user_id=user.id,
+            user_agent=user_agent,
+            ip_address=ip_address,
+            device=AuthHistory.user_agent_to_user_device(user_agent)
+        )
+        db.session.add(auth_history)
+        try:
+            db.session.commit()
+        except SQLAlchemyError as exception:
+            get_logger().error(f'Ошибка записи истории аутентификаций {str(exception)}')
 
     def to_dict(self) -> dict:
         return {
