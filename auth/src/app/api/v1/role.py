@@ -1,9 +1,8 @@
+from app.services.role_service import RoleService
+from app.utils.limiter import LimiterRequests
 from flask import Blueprint
 from flask.wrappers import Response
 from flask_jwt_extended import jwt_required
-
-from app.services.role_service import RoleService
-from app.utils.limiter import LimiterRequests
 
 from .schemas import (AssignRoleSchema, DeleteRoleSchema, ResponseRoleSchema,
                       RolesSchema, UnassignRoleSchema)

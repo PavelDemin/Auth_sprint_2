@@ -1,10 +1,7 @@
-from flask import Blueprint, jsonify, redirect, request, url_for
-from flask.wrappers import Response
-from flask_jwt_extended import current_user
-
 from app.services.oauth_service import OAuthService
 from app.utils.limiter import LimiterRequests
-from app.utils.oauth import oauth
+from flask import Blueprint, url_for
+from flask.wrappers import Response
 
 from .schemas import OAuthPathParameterSchema
 from .utils.request_validator import RequestValidator
